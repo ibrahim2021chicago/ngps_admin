@@ -109,7 +109,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                WeblogicServers
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -155,7 +155,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                WeblogicServers
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -201,7 +201,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                WeblogicServers
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -247,7 +247,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                WeblogicServers
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -293,7 +293,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                WeblogicServers
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -401,7 +401,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                ViewCoreCMILB
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -457,7 +457,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                ViewCoreCMILB
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -513,7 +513,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                ViewCoreCMILB
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -621,7 +621,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                PublisherCoreCMILB
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -677,7 +677,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                PublisherCoreCMILB
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
@@ -733,7 +733,7 @@ DR Site: $DRSite
                 echo""
                 ;;
             "Back to main menu")
-                exec "$0"
+                PublisherCoreCMILB
                 ;;
             *) echo "Invalid option $REPLY"
 		        echo""
