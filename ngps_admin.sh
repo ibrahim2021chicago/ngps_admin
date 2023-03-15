@@ -2,7 +2,7 @@
 
 clear
 
-. aps_admin.cfg
+. ngps_admin.cfg
 
 # Weblogic Servers
 WeblogicServers () {
