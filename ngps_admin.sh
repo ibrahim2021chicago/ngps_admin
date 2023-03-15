@@ -366,7 +366,7 @@ DR Site: $DRSite
 "
 
     local PS3='Choose an option: '
-    local options=("Grep process" "Stop Core Server" "Start Core Server" "Tail Core Server log" "Kill process" "Back to main menu")
+    local options=("Grep process" "Stop Core Server" "Start Core Server" "Tail log" "Kill process" "Back to main menu")
     local opt
     COLUMNS=12
     select opt in "${options[@]}"
@@ -386,17 +386,350 @@ DR Site: $DRSite
                 test $? -eq 0 && echo "Service started successfully" || echo "Service couldn't be started"
                 echo""
                 ;;
-            "Tail Core Server log")
+            "Tail log")
                 ${cmd_tail_viewcore_log[@]};
                 echo""
                 ;;
             "Kill process")
                 ps_out=`ps -ef | grep "coreServer" | grep -v grep`;
-                result=#(echo $ps_out)
+                result=$(echo $ps_out)
                 if [[ "$result" == "" ]];then
-                    echo "Service is not running"
+                    echo "Service is already stopped"
                 else
                     ps -ef | grep "coreServer" | grep -v grep | awk '{print $2}' | sudo -u $user xargs kill;
+                fi
+                echo""
+                ;;
+            "Back to main menu")
+                exec "$0"
+                ;;
+            *) echo "Invalid option $REPLY"
+		        echo""
+		        ;;
+        esac
+    done
+}
+
+# Viewer CMI Core Server
+ViewerCMICoreServer () {
+    clear
+    echo "
+Viewer CMI Core Server
+----------------------
+
+`hostname`
+DR Site: $DRSite
+"
+
+    local PS3='Choose an option: '
+    local options=("Grep process" "Stop CMI Core Server" "Start CMI Core Server" "Tail log" "Kill process" "Back to main menu")
+    local opt
+    COLUMNS=12
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Grep process")
+                ps_out=`ps -ef | grep "coreCMIServer" | grep -v grep`;
+                test $? -eq 0 && echo "$ps_out" || echo "Service is not running"
+		        echo""
+		        ;;
+            "Stop CMI Core Server")
+                ${cmd_stop_viewcmicore[@]};
+		        echo""
+		        ;;
+            "Start CMI Core Server")
+                ${cmd_start_viewcmicore[@]};
+                test $? -eq 0 && echo "Service started successfully" || echo "Service couldn't be started"
+                echo""
+                ;;
+            "Tail log")
+                ${cmd_tail_viewcmicore_log[@]};
+                echo""
+                ;;
+            "Kill process")
+                ps_out=`ps -ef | grep "coreCMIServer" | grep -v grep`;
+                result=$(echo $ps_out)
+                if [[ "$result" == "" ]];then
+                    echo "Service is already stopped"
+                else
+                    ps -ef | grep "coreCMIServer" | grep -v grep | awk '{print $2}' | sudo -u $user xargs kill;
+                fi
+                echo""
+                ;;
+            "Back to main menu")
+                exec "$0"
+                ;;
+            *) echo "Invalid option $REPLY"
+		        echo""
+		        ;;
+        esac
+    done
+}
+
+# Viewer Load Balancer
+ViewerLoadBalancer () {
+    clear
+    echo "
+Viewer Load Balancer
+--------------------
+
+`hostname`
+DR Site: $DRSite
+"
+
+    local PS3='Choose an option: '
+    local options=("Grep process" "Stop Load Balancer" "Start Load Balancer" "Tail log" "Kill process" "Back to main menu")
+    local opt
+    COLUMNS=12
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Grep process")
+                ps_out=`ps -ef | grep "load" | grep -v grep`;
+                test $? -eq 0 && echo "$ps_out" || echo "Service is not running"
+		        echo""
+		        ;;
+            "Stop Load Balancer")
+                ${cmd_stop_viewlb[@]};
+		        echo""
+		        ;;
+            "Start Load Balancer")
+                ${cmd_start_viewlb[@]};
+                test $? -eq 0 && echo "Service started successfully" || echo "Service couldn't be started"
+                echo""
+                ;;
+            "Tail log")
+                ${cmd_tail_viewlb_log[@]};
+                echo""
+                ;;
+            "Kill process")
+                ps_out=`ps -ef | grep "load" | grep -v grep`;
+                result=$(echo $ps_out)
+                if [[ "$result" == "" ]];then
+                    echo "Service is already stopped"
+                else
+                    ps -ef | grep "load" | grep -v grep | awk '{print $2}' | sudo -u $user xargs kill;
+                fi
+                echo""
+                ;;
+            "Back to main menu")
+                exec "$0"
+                ;;
+            *) echo "Invalid option $REPLY"
+		        echo""
+		        ;;
+        esac
+    done
+}
+
+# Publisher Core-CMI-LB
+PublisherCoreCMILB () {
+    clear
+    echo "
+Publisher Core-CMI-LB
+---------------------
+
+`hostname`
+DR Site: $DRSite
+"
+
+    local PS3='Choose an option: '
+    local options=("Publisher Core Server" "Publisher CMI Core Server" "Publisher Load Balancer" "Back to main menu")
+    local opt
+    COLUMNS=12
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Publisher Core Server")
+                if [[ `hostname` == @(srh01051.ute.fedex.com|srh01052.ute.fedex.com|vrh00648.ute.fedex.com|vrh00649.ute.fedex.com|prh01499.lhsprod.fedex.com|prh01500.lhsprod.fedex.com|prh12176.lhsprod.fedex.com|prh12177.lhsprod.fedex.com) ]];then
+                    PublisherCoreServer
+                else
+                    echo "The service is not available on this server"
+                fi
+                echo""
+		        ;;
+            "Publisher CMI Core Server")
+                if [[ `hostname` == @(srh01051.ute.fedex.com|vrh00648.ute.fedex.com|prh01499.lhsprod.fedex.com|prh12176.lhsprod.fedex.com) ]];then
+                    PublisherCMICoreServer
+                else
+                    echo "The service is not available on this server"
+                fi
+		        echo""
+		        ;;
+            "Publisher Load Balancer")
+                if [[ `hostname` == @(srh01051.ute.fedex.com|srh01052.ute.fedex.com|vrh00648.ute.fedex.com|vrh00649.ute.fedex.com|prh01499.lhsprod.fedex.com|prh01500.lhsprod.fedex.com|prh12176.lhsprod.fedex.com|prh12177.lhsprod.fedex.com) ]];then
+                    PublisherLoadBalancer
+                else
+                    echo "The service is not available on this server"
+                fi
+		        echo""
+		        ;;
+            "Back to main menu")
+                exec "$0"
+                ;;
+            *) echo "Invalid option $REPLY"
+		        echo""
+		        ;;
+        esac
+    done
+}
+
+# Publisher Core Server
+PublisherCoreServer () {
+    clear
+    echo "
+Publisher Core Server
+---------------------
+
+`hostname`
+DR Site: $DRSite
+"
+
+    local PS3='Choose an option: '
+    local options=("Grep process" "Stop Core Server" "Start Core Server" "Tail log" "Kill process" "Back to main menu")
+    local opt
+    COLUMNS=12
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Grep process")
+                ps_out=`ps -ef | grep "coreServer" | grep -v grep`;
+                test $? -eq 0 && echo "$ps_out" || echo "Service is not running"
+		        echo""
+		        ;;
+            "Stop Core Server")
+                ${cmd_stop_pubcore[@]};
+		        echo""
+		        ;;
+            "Start Core Server")
+                ${cmd_start_pubcore[@]};
+                test $? -eq 0 && echo "Service started successfully" || echo "Service couldn't be started"
+                echo""
+                ;;
+            "Tail log")
+                ${cmd_tail_pubcore_log[@]};
+                echo""
+                ;;
+            "Kill process")
+                ps_out=`ps -ef | grep "coreServer" | grep -v grep`;
+                result=$(echo $ps_out)
+                if [[ "$result" == "" ]];then
+                    echo "Service is already stopped"
+                else
+                    ps -ef | grep "coreServer" | grep -v grep | awk '{print $2}' | sudo -u $user xargs kill;
+                fi
+                echo""
+                ;;
+            "Back to main menu")
+                exec "$0"
+                ;;
+            *) echo "Invalid option $REPLY"
+		        echo""
+		        ;;
+        esac
+    done
+}
+
+# Publisher CMI Core Server
+PublisherCMICoreServer () {
+    clear
+    echo "
+Publisher CMI Core Server
+-------------------------
+
+`hostname`
+DR Site: $DRSite
+"
+
+    local PS3='Choose an option: '
+    local options=("Grep process" "Stop CMI Core Server" "Start CMI Core Server" "Tail log" "Kill process" "Back to main menu")
+    local opt
+    COLUMNS=12
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Grep process")
+                ps_out=`ps -ef | grep "coreCMIServer" | grep -v grep`;
+                test $? -eq 0 && echo "$ps_out" || echo "Service is not running"
+		        echo""
+		        ;;
+            "Stop CMI Core Server")
+                ${cmd_stop_pubcmicore[@]};
+		        echo""
+		        ;;
+            "Start CMI Core Server")
+                ${cmd_start_pubcmicore[@]};
+                test $? -eq 0 && echo "Service started successfully" || echo "Service couldn't be started"
+                echo""
+                ;;
+            "Tail log")
+                ${cmd_tail_pubcmicore_log[@]};
+                echo""
+                ;;
+            "Kill process")
+                ps_out=`ps -ef | grep "coreCMIServer" | grep -v grep`;
+                result=$(echo $ps_out)
+                if [[ "$result" == "" ]];then
+                    echo "Service is already stopped"
+                else
+                    ps -ef | grep "coreCMIServer" | grep -v grep | awk '{print $2}' | sudo -u $user xargs kill;
+                fi
+                echo""
+                ;;
+            "Back to main menu")
+                exec "$0"
+                ;;
+            *) echo "Invalid option $REPLY"
+		        echo""
+		        ;;
+        esac
+    done
+}
+
+# Publisher Load Balancer
+PublisherLoadBalancer () {
+    clear
+    echo "
+Publisher Load Balancer
+-----------------------
+
+`hostname`
+DR Site: $DRSite
+"
+
+    local PS3='Choose an option: '
+    local options=("Grep process" "Stop Load Balancer" "Start Load Balancer" "Tail log" "Kill process" "Back to main menu")
+    local opt
+    COLUMNS=12
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Grep process")
+                ps_out=`ps -ef | grep "load" | grep -v grep`;
+                test $? -eq 0 && echo "$ps_out" || echo "Service is not running"
+		        echo""
+		        ;;
+            "Stop Load Balancer")
+                ${cmd_stop_publb[@]};
+		        echo""
+		        ;;
+            "Start Load Balancer")
+                ${cmd_start_publb[@]};
+                test $? -eq 0 && echo "Service started successfully" || echo "Service couldn't be started"
+                echo""
+                ;;
+            "Tail log")
+                ${cmd_tail_publb_log[@]};
+                echo""
+                ;;
+            "Kill process")
+                ps_out=`ps -ef | grep "load" | grep -v grep`;
+                result=$(echo $ps_out)
+                if [[ "$result" == "" ]];then
+                    echo "Service is already stopped"
+                else
+                    ps -ef | grep "load" | grep -v grep | awk '{print $2}' | sudo -u $user xargs kill;
+                fi
                 echo""
                 ;;
             "Back to main menu")
